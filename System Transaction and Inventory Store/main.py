@@ -53,6 +53,40 @@ def shopping_cart(inventory_store):
     return cart
 
 
+# Function for transaction process
+def transaction_process(cart_user, inventory_store):
+    # check stock item
+    for item in cart_user:  # check items purchased by the user
+        id_item = item["id_item"]  # items purchased by the user
+        quantity_of_items_purchased = item["quantity"]  # items purchased by the user
+
+        if (
+            inventory_store[id_item]["Stock"] > quantity_of_items_purchased
+        ):  # check stock
+            print(f"Goods check successful")
+        else:
+            print(f"Goods check failed")
+            return False
+
+        # Sum the total shopping price
+
+        total_price = 0
+
+        for item in cart_user:
+            id_item = item["id_item"]  # get id_item from cart_user to find information
+            quantity_of_items_purchased = item["quantity"]
+            item_at_store = inventory_store[id_item]
+            name_item = item_at_store["Name"]
+            price_item = item_at_store["Price (Rp)"]
+
+            subtotal = quantity_of_items_purchased * price_item
+
+            total_price += subtotal
+
+        print(f"Total Price : Rp {total_price}")
+        return True
+
+
 print("\n===================== WELCOME TO BOOK STORE =====================")
 print("=" * 65)
 
@@ -64,4 +98,16 @@ for id_brg, detail in inventory.items():
     )
 
 # 2. The user will put the item into the shopping cart
-cart_user = shopping_cart(inventory)
+user_shopping_cart = shopping_cart(inventory)
+
+# 3. transaction process when the cart not empty
+if user_shopping_cart:
+    print("\nTHIS IS YOUR SHOPPING CART\n")
+
+    for item in user_shopping_cart:
+        id_item = item["id_item"]
+        name = inventory[id_item]["Name"]
+        quantity = item["quantity"]
+        print(f"{name} {quantity} units")
+
+        transaction_process(user_shopping_cart, inventory)
