@@ -55,35 +55,46 @@ def shopping_cart(inventory_store):
 
 # Function for transaction process
 def transaction_process(cart_user, inventory_store):
-    # check stock item
-    for item in cart_user:  # check items purchased by the user
+
+    # check stock item in inventory
+    for item in cart_user:  # check items purchased by the user (example : {"id_item": "ID001", "quantity": 3})
         id_item = item["id_item"]  # items purchased by the user
         quantity_of_items_purchased = item["quantity"]  # items purchased by the user
 
-        if (
-            inventory_store[id_item]["Stock"] > quantity_of_items_purchased
-        ):  # check stock
+        if (inventory_store[id_item]["Stock"] > quantity_of_items_purchased):  
             print(f"Goods check successful")
         else:
             print(f"Goods check failed")
             return False
 
         # Sum the total shopping price
-
         total_price = 0
-
-        for item in cart_user:
-            id_item = item["id_item"]  # get id_item from cart_user to find information
+        for item in cart_user: # search item in cart when user purchased
+            id_item = item["id_item"]  # get id_item from cart_user to find information (example : {"id_item": "ID001", "quantity": 3})
             quantity_of_items_purchased = item["quantity"]
-            item_at_store = inventory_store[id_item]
+
+            item_at_store = inventory_store[id_item] # id item in inventory  store
             name_item = item_at_store["Name"]
             price_item = item_at_store["Price (Rp)"]
-
             subtotal = quantity_of_items_purchased * price_item
-
             total_price += subtotal
 
         print(f"Total Price : Rp {total_price}")
+
+        # reduce stock in inventory
+        inventory_store[id_item]["Stock"] -= quantity_of_items_purchased
+        # remaining stock
+        remaining_stock = inventory_store[id_item]["Stock"]
+
+        # Print purchased iem
+        print(f"{name_item} | {quantity} units | Rp {subtotal : }")
+        # print Total Item
+        print(f"Total Spending : {total_price}")
+        # Informatioon about Inventory
+        print("\n==== Inventory After Transaction ====")
+        for id_item, detail in inventory_store.items():
+            print(f"{id_item} : {detail}")
+
         return True
 
 
