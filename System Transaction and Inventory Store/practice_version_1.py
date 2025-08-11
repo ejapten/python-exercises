@@ -7,16 +7,31 @@ def shopping_cart(inventory_store):
   cart_user = []
   while True:
 
-    cart_item = input("Enter Name of Item : ")
+    cart_item = input("Enter Name of Item : ").strip()
+    if cart_item == "":
+      print("Name Can't be Empty")
+      continue
+    if cart_item.isnumeric():
+      print("Name Can't be Numeric")
+      continue
+
     if cart_item.lower() == 'end':
       break
-    
+      
     for key, detail in inventory_store.items():
       if detail["Name"] == cart_item:
         id_item = key
         break
 
-    quantity = int(input("Enter Quantity of Item : "))
+    while True:
+      try:
+        quantity = int(input("Enter Quantity of Item : "))
+        if quantity > 0:
+          break
+        else:
+          print("\n--> The number of items must be more than 0\n")
+      except ValueError:
+        print("\n--> The Input is not valid. Please enter a number\n")
 
     # cart shopping
     cart_user.append({"id_item": id_item, "cart_item": cart_item, "quantity": quantity})
@@ -41,13 +56,22 @@ def process_transaction(cart_user, inventory_store):
     total_harga += subtotal
 
     print(f"= {item_name} | {quantity} Units | Rp {subtotal}")
+
+    # reduce stock
+    inventory_store[id_item]['Stock'] -= quantity
+    sisa_stock = inventory_store[id_item]['Stock']
   
   
   print(f"\nThe total price of the goods purchased is Rp {total_harga}")
+  print("\n=== Current Inventory ====")
+  for key, detail in inventory_store.items():
+    print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']}")
 
-  
-
-
+# Interface
+print("\n==== Inventory Store ====\n")
+for key, detail in inventory.items():
+  print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']:<7}")
+print("===============\n")
 
 cart_for_shopping = shopping_cart(inventory)
 
