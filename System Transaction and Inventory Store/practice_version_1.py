@@ -53,7 +53,7 @@ def shopping_cart(inventory_store):
 # Function for Transaction
 def process_transaction(cart_user, inventory_store):
 
-  total_harga = 0
+  your_total_spending = 0
 
   print("\n==== Subtotal ====")
 
@@ -64,21 +64,43 @@ def process_transaction(cart_user, inventory_store):
     price_in_inventory = inventory_store[id_item]["Price"]
     item_name = inventory_store[id_item]["Name"]
     subtotal = quantity * price_in_inventory
-    total_harga += subtotal
+    your_total_spending += subtotal
 
     print(f"= {item_name} | {quantity} Units | Rp {subtotal}")
 
-    # reduce stock
-    inventory_store[id_item]['Stock'] -= quantity
-    sisa_stock = inventory_store[id_item]['Stock']
   print("================")
   
+  # total spending
+  print(f"\n-->>The total price of the goods purchased is Rp {your_total_spending}<<--\n")
   
-  print(f"\n-->>The total price of the goods purchased is Rp {total_harga}<<--")
+  # System Payment
+  print("*" * 25)
+  while True:
+    pay = int(input("->Enter the amount of money : "))
+    if pay >= your_total_spending:
+      change_money = pay - your_total_spending
+      print(f"\n->This Your Change : {change_money}")
+
+      # stock
+      for item in cart_user:
+        id_item = item['id_item']
+        quantity = item['quantity']
+        # reduce stock
+        inventory_store[id_item]['Stock'] -= quantity
+        sisa_stock = inventory_store[id_item]['Stock']
+      break
+    else:
+      print("\n->Sorry, your money is not enough to make the payment.")
+      break
+  print("*" * 25)
+
+
   print("\n=== Current Inventory ====")
   for key, detail in inventory_store.items():
     print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']}")
   print("===========================\n")
+
+
 
 # Interface
 print("\n==== Inventory Store ====\n")
