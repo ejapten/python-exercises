@@ -1,7 +1,14 @@
 inventory = {'ID001' : {'Name' : 'Pen', 'Price' : 2000, 'Stock': 200},
             'ID002' : {'Name' : 'Pencil', 'Price' : 1000, 'Stock' : 50},
             'ID003' : {'Name' : 'Book', 'Price' : 5000, 'Stock' : 20}}
-            
+
+#Function for inputting item names so that they are not case sensitive
+def input_cs(name_item_cart, inventory_store):
+  for key, detail in inventory_store.items():
+    if detail['Name'].lower() == name_item_cart.lower():
+      return key
+  return None
+
 # Function for Interaction User when Shopping
 def shopping_cart(inventory_store):
   cart_user = []
@@ -14,9 +21,13 @@ def shopping_cart(inventory_store):
     if cart_item.isnumeric():
       print("Name Can't be Numeric")
       continue
-
     if cart_item.lower() == 'end':
       break
+
+    id_item = input_cs(cart_item, inventory_store)
+    if id_item is None:
+      print(f"Sorry, item {cart_item} not found")
+      continue
       
     for key, detail in inventory_store.items():
       if detail["Name"] == cart_item:
@@ -60,22 +71,26 @@ def process_transaction(cart_user, inventory_store):
     # reduce stock
     inventory_store[id_item]['Stock'] -= quantity
     sisa_stock = inventory_store[id_item]['Stock']
+  print("================")
   
   
-  print(f"\nThe total price of the goods purchased is Rp {total_harga}")
+  print(f"\n-->>The total price of the goods purchased is Rp {total_harga}<<--")
   print("\n=== Current Inventory ====")
   for key, detail in inventory_store.items():
     print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']}")
+  print("===========================\n")
 
 # Interface
 print("\n==== Inventory Store ====\n")
 for key, detail in inventory.items():
   print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']:<7}")
-print("===============\n")
+print("===========================\n")
 
 cart_for_shopping = shopping_cart(inventory)
 
+print("===========================")
 print("\nThis is Your Shopping Cart\n")
+print("===========================\n")
 for item in cart_for_shopping:
   print(f"+ {item['cart_item']} {item['quantity']} units")
  
