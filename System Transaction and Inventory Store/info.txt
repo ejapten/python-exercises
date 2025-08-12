@@ -1,0 +1,4 @@
+- main.py : This version of the code was generated with the assistance of AI tools. It may include AI-suggested logic, syntax, and structure, and is intended as an example or starting point for further development.
+
+
+- practice_version_1.py : This version was entirely written and developed manually without direct AI code generation. It reflects personal coding style, logic design, and manual problem solving approaches.
