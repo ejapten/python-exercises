@@ -50,36 +50,46 @@ def shopping_cart(inventory_store):
 
   return cart_user
 
+# Function for discount
+def discount(cart_user, inventory_store):
+
+  total_spending = 0
+  for item in cart_user:
+    id_item = item['id_item']
+    name = inventory_store[id_item]["Name"] 
+    quantity = item['quantity']
+    price_in_inventory = inventory_store[id_item]["Price"]
+    subtotal = quantity * price_in_inventory
+
+    if quantity > 10:
+      discount = 0.1
+      payment = subtotal - (discount * subtotal)
+      print(f"id : {id_item}  | Name : {name} | quantity : {quantity} | Subtotal : {subtotal} | discount : {discount} | Total : {payment:.0f}")
+    else:
+      payment = subtotal
+      print(f"id : {id_item}  | Name : {name} | quantity : {quantity} | Subtotal : {subtotal} | discount : 0 | Total : {payment:.0f}")
+
+    total_spending += payment
+
+  return total_spending
+
 # Function for Transaction
 def process_transaction(cart_user, inventory_store):
-
-  your_total_spending = 0
-
+  #subtotal
   print("\n==== Subtotal ====")
-
-  for item in cart_user:
-    id_item = item["id_item"]
-    quantity = item["quantity"]
-
-    price_in_inventory = inventory_store[id_item]["Price"]
-    item_name = inventory_store[id_item]["Name"]
-    subtotal = quantity * price_in_inventory
-    your_total_spending += subtotal
-
-    print(f"= {item_name} | {quantity} Units | Rp {subtotal}")
-
+  total_spending = discount(cart_user, inventory_store)
   print("================")
   
   # total spending
-  print(f"\n-->>The total price of the goods purchased is Rp {your_total_spending}<<--\n")
+  print(f"\n-->>The total price of the goods purchased is Rp {total_spending:.0f}<<--\n")
   
   # System Payment
   print("*" * 25)
   while True:
     pay = int(input("->Enter the amount of money : "))
-    if pay >= your_total_spending:
-      change_money = pay - your_total_spending
-      print(f"\n->This Your Change : {change_money}")
+    if pay >= total_spending:
+      change_money = pay - total_spending
+      print(f"\n->This Your Change : {change_money:.0f}")
 
       # stock
       for item in cart_user:
@@ -108,13 +118,16 @@ for key, detail in inventory.items():
   print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']:<7}")
 print("===========================\n")
 
+#1. The user will put the item into the shopping cart
 cart_for_shopping = shopping_cart(inventory)
 
+# 2. Shopping list
 print("===========================")
 print("\nThis is Your Shopping Cart\n")
 print("===========================\n")
 for item in cart_for_shopping:
   print(f"+ {item['cart_item']} {item['quantity']} units")
- 
+
+# 3. Transaction Process
 process_transaction(cart_for_shopping, inventory)
 
