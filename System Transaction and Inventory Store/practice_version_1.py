@@ -14,7 +14,7 @@ def shopping_cart(inventory_store):
   cart_user = []
   while True:
 
-    cart_item = input("Enter Name of Item : ").strip()
+    cart_item = input("--> Enter Name of Item : ").strip()
     if cart_item == "":
       print("Name Can't be Empty")
       continue
@@ -36,7 +36,7 @@ def shopping_cart(inventory_store):
 
     while True:
       try:
-        quantity = int(input("Enter Quantity of Item : "))
+        quantity = int(input("++> Enter Quantity of Item : "))
         if quantity > 0:
           break
         else:
@@ -51,7 +51,7 @@ def shopping_cart(inventory_store):
   return cart_user
 
 # Function for discount
-def discount(cart_user, inventory_store):
+def discount_and_total_spending(cart_user, inventory_store):
 
   total_spending = 0
   for item in cart_user:
@@ -67,26 +67,42 @@ def discount(cart_user, inventory_store):
       print(f"id : {id_item}  | Name : {name} | quantity : {quantity} | Subtotal : {subtotal} | discount : {discount} | Total : {payment:.0f}")
     else:
       payment = subtotal
-      print(f"id : {id_item}  | Name : {name} | quantity : {quantity} | Subtotal : {subtotal} | discount : 0 | Total : {payment:.0f}")
+      print(f"Name : {name} | quantity : {quantity} | Subtotal : {subtotal} | discount : 0 | Total : {payment:.0f}")
 
     total_spending += payment
 
   return total_spending
 
 # Function for Transaction
-def process_transaction(cart_user, inventory_store):
+def payment_system(cart_user, inventory_store):
+
+  if not cart_user:
+   print("No items in cart. Exiting program.")
+   return
+
   #subtotal
-  print("\n==== Subtotal ====")
-  total_spending = discount(cart_user, inventory_store)
-  print("================")
+  print("\n"+ "-"*25 + "Subtotal" + "-"*25)
+  total_spending = discount_and_total_spending(cart_user, inventory_store)
+  print("-"*60)
   
   # total spending
-  print(f"\n-->>The total price of the goods purchased is Rp {total_spending:.0f}<<--\n")
+  print(f"-->> The total price of the goods purchased is Rp {total_spending:.0f} <<--")
+  print("="*85+"\n")
   
   # System Payment
-  print("*" * 25)
+  print("\n"+ "="*85)
+  print("Payment".center(80))
+  print("="*85)
+
   while True:
-    pay = int(input("->Enter the amount of money : "))
+    pay = input("->Enter the amount of money : ")
+
+    if not pay.isdigit():
+      print("Please enter a valid number!")
+      continue
+    
+    pay = int(pay)
+
     if pay >= total_spending:
       change_money = pay - total_spending
       print(f"\n->This Your Change : {change_money:.0f}")
@@ -102,32 +118,31 @@ def process_transaction(cart_user, inventory_store):
     else:
       print("\n->Sorry, your money is not enough to make the payment.")
       break
-  print("*" * 25)
-
-
-  print("\n=== Current Inventory ====")
+      
+ 
+  print("\n"+ "="*35+"Inventory Store"+ "="*35)
   for key, detail in inventory_store.items():
     print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']}")
-  print("===========================\n")
-
+  print("="*85+"\n")
 
 
 # Interface
-print("\n==== Inventory Store ====\n")
+print("\n"+ "="*35+"Inventory Store"+ "="*35)
 for key, detail in inventory.items():
   print(f"ID : {key:<7} | Product Name : {detail['Name']:<7} | Product Price : {detail['Price']:<7} | Stock Product : {detail['Stock']:<7}")
-print("===========================\n")
+print("="*85+"\n")
 
 #1. The user will put the item into the shopping cart
 cart_for_shopping = shopping_cart(inventory)
 
 # 2. Shopping list
-print("===========================")
-print("\nThis is Your Shopping Cart\n")
-print("===========================\n")
+print("\n"+ "="*85)
+print("This is Your Shopping Cart".center(80))
+print("="*85)
+
 for item in cart_for_shopping:
   print(f"+ {item['cart_item']} {item['quantity']} units")
 
-# 3. Transaction Process
-process_transaction(cart_for_shopping, inventory)
+# 3. Payment Process
+payment_system(cart_for_shopping, inventory)
 
