@@ -54,13 +54,14 @@ def shopping_cart(inventory_store):
 def discount_and_total_spending(cart_user, inventory_store):
 
   total_spending = 0
+  print("\n"+ "-"*25 + "Subtotal" + "-"*25)
   for item in cart_user:
     id_item = item['id_item']
     name = inventory_store[id_item]["Name"] 
     quantity = item['quantity']
     price_in_inventory = inventory_store[id_item]["Price"]
     subtotal = quantity * price_in_inventory
-
+    
     if quantity > 10:
       discount = 0.1
       payment = subtotal - (discount * subtotal)
@@ -71,6 +72,8 @@ def discount_and_total_spending(cart_user, inventory_store):
 
     total_spending += payment
 
+  print("-"*85)
+
   return total_spending
 
 # Function for Transaction
@@ -79,14 +82,10 @@ def payment_system(cart_user, inventory_store):
   if not cart_user:
    print("No items in cart. Exiting program.")
    return
-
-  #subtotal
-  print("\n"+ "-"*25 + "Subtotal" + "-"*25)
-  total_spending = discount_and_total_spending(cart_user, inventory_store)
-  print("-"*60)
-  
+   
   # total spending
-  print(f"-->> The total price of the goods purchased is Rp {total_spending:.0f} <<--")
+  total_spending_user = discount_and_total_spending(cart_user, inventory_store)
+  print(f"-->> The total price of the goods purchased is Rp {total_spending_user:.0f} <<--")
   print("="*85+"\n")
   
   # System Payment
@@ -103,8 +102,8 @@ def payment_system(cart_user, inventory_store):
     
     pay = int(pay)
 
-    if pay >= total_spending:
-      change_money = pay - total_spending
+    if pay >= total_spending_user:
+      change_money = pay - total_spending_user
       print(f"\n->This Your Change : {change_money:.0f}")
 
       # stock
