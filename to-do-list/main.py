@@ -14,7 +14,7 @@ def add_task():
         # Format Tanggal
         format_date = '%Y-%m-%d'
         date_task = datetime.strptime(enter_date_task, format_date)
-        todo_list['Date'] = date_task
+        #todo_list['Date'] = date_task
         break
 
       except ValueError:
@@ -25,21 +25,35 @@ def add_task():
     enter_task = input("Masukan tugas : ")
     if enter_task == 'end':
       break
-    todo_list['Task'] = enter_task
+    #todo_list['Task'] = enter_task
+
+    # Menambahkan ke dalam penyimpanan
+    if date_task in todo_list:
+      print(f"Tanggal {date_task.strftime('%Y-%m-%d')} sudah ada, menambahkan tugas baru.")
+      todo_list[date_task].append(enter_task)
+    else:
+      print(f"Membuat entri baru untuk tanggal {date_task.strftime('%Y-%m-%d')}.")
+      todo_list[date_task] = [enter_task] 
+
 
     # Input Lanjutan untuk simpan
     while True : 
       input_simpan = input("Apakah ingin disimpan? ")
       if input_simpan.lower() == "simpan":
+        print(todo_list)
+        for key, task_list in todo_list.items():
+          tasks_str = ", ".join(task_list) # ubah list menjadi string dengan dipisahkan koma dan spasi
+          print(f"Tanggal: {key.strftime('%Y-%m-%d')} | Tugas: {tasks_str}")
+          
         exit()
       elif input_simpan.lower() == "tidak simpan":
         break
       else:
         print("Masukan dengan benar")
         continue
-      
-          
-          
+  
+  print(todo_list)
+    
 
   # Menampilkan output tanggal dalam bentuk 'contoh : 2009-12-23 14:40:12'
   # print(f"Task : {todo_list['Task']}")
