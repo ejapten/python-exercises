@@ -1,9 +1,9 @@
 from datetime import datetime
 
-todo_list = {}
+daftar_tugas = {}
 
 # Menambah Tugas
-def add_task():
+def add_task(todo_list):
   print("Format date and time -> Years-Month-Day")
 
   while True:
@@ -41,17 +41,40 @@ def add_task():
       if input_simpan.lower() == "simpan":
         for key, task_list in todo_list.items():
           tasks_str = ", ".join(task_list) # ubah list menjadi string dengan dipisahkan koma dan spasi
-          print(f"\nTanggal: {key.strftime('%Y-%m-%d')} | Tugas: {tasks_str}")
-        exit()
+          print(f"Tanggal: {key.strftime('%Y-%m-%d')} | Tugas: {tasks_str}")
+        return todo_list
       elif input_simpan.lower() == "tidak simpan":
         break
       else:
         print("\nMasukan dengan benar")
         continue
 
-  return 
-  
-add_task()
+  return todo_list
+
+# Fungsi melihat daftar tugas
+def view_task() :
+
+    if not daftar_tugas:   # kalau kosong
+        print("\nBelum ada tugas.")
+    else:
+        for key, task_list in daftar_tugas.items():
+            tasks_str = ", ".join(task_list)
+            print(f"Tanggal: {key.strftime('%Y-%m-%d')} | Tugas: {tasks_str}")
+
+while True:
+  print("\n" + "-"*20)
+  print("Pilih Menu")
+  print("1. Tambah Tugas ")
+  print("2. Daftar Tugas ")
+  print("3. Keluar")
+
+  pilihan_menu = input("Masukan Pilihan : ")
+  if pilihan_menu == "1":
+    daftar_tugas = add_task(daftar_tugas)
+  elif pilihan_menu == "2":
+    view_task()
+  else:
+    break
 
 
 
