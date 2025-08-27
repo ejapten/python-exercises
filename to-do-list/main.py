@@ -21,11 +21,26 @@ def tambah_tanggal_tugas():
       print(f"Format tanggal anda '{tanggal_tugas}' Salah, masukan dalam bentuk format yang benar")
       continue
 
+def simpan_atau_tidak():
+  while True:
+    tugas_disimpan_atau_tidak = input("Apakah tugas ingin disimpan? (Y/N) : ")
+    
+    if tugas_disimpan_atau_tidak.lower() == "y":
+      print("Berhasil disimpan!")
+      return True   # kasih sinyal ke luar bahwa tugas disimpan
+    
+    elif tugas_disimpan_atau_tidak.lower() == "n":
+      print("Tugas tidak disimpan, lanjutkan menambahkan tugas")
+      return False  # kasih sinyal ke luar bahwa tidak disimpan
+    
+    else:
+      print("\nMasukan dengan benar")
+      continue
+
 def tambah_daftar_tugas_todolist():
   while True:
-
+    daftar_tugas_yang_ditambahkan = daftar_tugas
     tambah_daftar_tanggal_tugas = tambah_tanggal_tugas()
-
     tambah_daftar_nama_tugas = tambah_nama_tugas()
     if tambah_daftar_nama_tugas is None:
       break
@@ -36,9 +51,15 @@ def tambah_daftar_tugas_todolist():
     else:
       nomor = 1
 
-    daftar_tugas[nomor] = {"tanggal":tambah_daftar_tanggal_tugas, "tugas":tambah_daftar_nama_tugas}
+    daftar_tugas_yang_ditambahkan[nomor] = {"tanggal":tambah_daftar_tanggal_tugas, "tugas":tambah_daftar_nama_tugas}
     print(f"Tugas berhasil ditambahkan dengan nomor {nomor}!\n")
 
+    apakah_ingin_simpan_tugas = simpan_atau_tidak()
+    if apakah_ingin_simpan_tugas:
+      break
+    else:
+      continue
+  
 tambah_daftar_tugas_todolist()
 print("\nDaftar tugas:", daftar_tugas)
 
