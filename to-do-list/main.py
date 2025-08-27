@@ -2,98 +2,45 @@ from datetime import datetime
 
 daftar_tugas = {}
 
+def tambah_nama_tugas():
+  while True:
+    nama_tugas = input("Masukan tugas : ")
+    if nama_tugas == 'end':
+      return None
+    return nama_tugas
 
-# Menambah Tugas
-def add_task(todo_list):
-  
-  print("Format date and time -> Years-Month-Day")
+def tambah_tanggal_tugas():
+  while True:
+    try:
+      tanggal_tugas = input("Masukan Tanggal : ").strip()
+      format_tanggal = "%Y-%m-%d"
+      format_tanggal_tugas = datetime.strptime(tanggal_tugas, format_tanggal)
+      return format_tanggal_tugas.strftime(format_tanggal)
+    
+    except ValueError:
+      print(f"Format tanggal anda '{tanggal_tugas}' Salah, masukan dalam bentuk format yang benar")
+      continue
 
+def tambah_daftar_tugas_todolist():
   while True:
 
-    # Input Tanggal
-    while True:
-      try:
-        enter_date_task = input("\nMasukan Tanggal : ").strip()
-        # Format Tanggal
-        format_date = '%Y-%m-%d'
-        date_task = datetime.strptime(enter_date_task, format_date)
-        break
+    tambah_daftar_tanggal_tugas = tambah_tanggal_tugas()
 
-      except ValueError:
-        print(f"Format tanggal anda '{enter_date_task}' Salah, masukan dalam bentuk format yang benar")
-        continue
-
-    # Input Nama tugas yang akan dikerjakan 
-    enter_task = input("Masukan tugas : ")
-    if enter_task == 'end': #  jika tidak ingin menambahkan tugas
+    tambah_daftar_nama_tugas = tambah_nama_tugas()
+    if tambah_daftar_nama_tugas is None:
       break
 
-    # Menambahkan ke dalam penyimpanan
-    if date_task in todo_list:
-      print(f"\n-->Tanggal {date_task.strftime('%Y-%m-%d')} sudah ada, menambahkan tugas baru.")
-      nomor = len(todo_list[date_task]) + 1
-      todo_list[date_task][nomor] = enter_task
+    # nomor urut sebagai key
+    if daftar_tugas:
+      nomor = max(daftar_tugas.keys()) + 1
     else:
-      print(f"\n-->Membuat entri baru untuk tanggal {date_task.strftime('%Y-%m-%d')}.")
-      todo_list[date_task] = {1: enter_task}
+      nomor = 1
 
-    # Input Lanjutan untuk simpan
-    while True: 
-        input_simpan = input("\nApakah ingin disimpan (Y/N) ?\n")
+    daftar_tugas[nomor] = {"tanggal":tambah_daftar_tanggal_tugas, "tugas":tambah_daftar_nama_tugas}
+    print(f"Tugas berhasil ditambahkan dengan nomor {nomor}!\n")
 
-        if input_simpan.lower() == "y":
-            print("\n"+"="*35)
-            print("Berikut Daftar Tugas anda yang telah ditambahkan: ")
-            for key, task_dict in todo_list.items():
-                print(f"\nTanggal: {key.strftime('%Y-%m-%d')}")
-                for num, task in task_dict.items():
-                    print(f"  {num}. {task}")
-            print("\n"+"="*35)
-            return todo_list
-            
-        elif input_simpan.lower() == "n":
-            break
-
-        else:
-            print("\nMasukan dengan benar")
-            continue
-
-  return todo_list
-
-# Fungsi melihat daftar tugas
-def view_task() :
-
-    if not daftar_tugas:   # kalau kosong
-        print("\nBelum ada tugas.")
-    else:
-        for date, tasks in daftar_tugas.items():
-          print(f"\nTanggal: {date.strftime('%Y-%m-%d')}")
-          for num, task in tasks.items():
-            print(f"  {num}. {task}")
-
-# Fungsi Menghapus pada Daftar tugas
-#def delete_task():
-  # for key, task_list in daftar_tugas.items():
-
-while True:
-  print("\n" + "-"*20)
-  print("Pilih Menu")
-  print("1. Tambah Tugas ")
-  print("2. Daftar Tugas ")
-  print("3. Keluar")
-
-  pilihan_menu = input("Masukan Pilihan : ")
-  if pilihan_menu == "1":
-    daftar_tugas = add_task(daftar_tugas)
-  elif pilihan_menu == "2":
-    view_task()
-  elif pilihan_menu == "3":
-    break
-  else:
-    print("\n--> Masukan pilihan dengan tepat")
-    continue
-    
-     
+tambah_daftar_tugas_todolist()
+print("\nDaftar tugas:", daftar_tugas)
 
 
 
