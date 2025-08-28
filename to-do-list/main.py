@@ -1,5 +1,4 @@
 from datetime import datetime
-import sys
 
 daftar_tugas = {}
 
@@ -95,7 +94,7 @@ def melihat_daftar_tugas():
     for key, list_tugas in daftar_tugas.items():
       print(f"\n{key}. 📅 {list_tugas['tanggal'].strftime('%Y-%m-%d')}")
       for tugas_todolist in list_tugas["tugas"]:
-        print(f"      ➡️ {tugas_todolist}")
+        print(f"      ➡️  {tugas_todolist}")
 
 def delete_by_tanggal():
 
