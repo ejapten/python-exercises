@@ -30,7 +30,7 @@ def simpan_atau_tidak():
       return True   # kasih sinyal ke luar bahwa tugas disimpan
     
     elif tugas_disimpan_atau_tidak.lower() == "n":
-      print("Tugas tidak disimpan, lanjutkan menambahkan tugas")
+      print("Tugas disimpan, lanjutkan menambahkan tugas")
       return False  # kasih sinyal ke luar bahwa tidak disimpan
     
     else:
@@ -81,16 +81,37 @@ def melihat_daftar_tugas():
       print(f"\n{key}. {list_tugas['tanggal'].strftime('%Y-%m-%d')}")
       for tugas_todolist in list_tugas["tugas"]:
         print(f"- {tugas_todolist}")
-  
-tambah_daftar_tugas_todolist()
-print("\nDaftar tugas:", daftar_tugas)
+
+def delete_by_tanggal():
+  hapus_tanggal = input("Masukan Tanggal yang ingin dihapus : ")
+  for key, data in list(daftar_tugas.items()):
+    if data["tanggal"].strftime("%Y-%m-%d") == hapus_tanggal:
+      del daftar_tugas[key]
+      print(f"Tanggal {hapus_tanggal} berhasil dihapus")
+      return
+  print(f"Tanggal {hapus_tanggal} tidak ditemukan")
+
+def menyelesaikan_tugas():
+  tanggal_selesaikan_tugas = input("Masukan Tangal : ")
+  tugas_yang_diselesaikan = input("Masukan Tugas yang sudah diselesaikan : ")
+  for key, data in daftar_tugas.items():
+    if data["tanggal"].strftime("%Y-%m-%d") ==  tanggal_selesaikan_tugas:
+      for i, tugas in enumerate(data["tugas"]):
+        if tugas == tugas_yang_diselesaikan:
+          data["tugas"][i] = f"~~{tugas}~~"
+          print(f"Tugas '{tugas_yang_diselesaikan}' pada tanggal {tanggal_selesaikan_tugas} ditandai selesai")
+          return
+      print(f"Tugas '{tugas_yang_diselesaikan}' tidak ditemukan pada tanggal {tanggal_selesaikan_tugas}")
+  print(f"Tanggal {tanggal_selesaikan_tugas} tidak ditemukan")
 
 while True:
   print("\n" + "-"*20)
   print("Pilihan Menu:")
   print("1. Tambah Tugas")
   print("2. Daftar Tugas")
-  print("3. Keluar")
+  print("3. Hapus tugas")
+  print("4. Hapus Tugas Berdasakan Tanggal")
+  print("5. Keluar")
 
   pilihan_menu = input("Masukan Pilihan : ")
   if pilihan_menu == "1":
@@ -98,6 +119,10 @@ while True:
   elif pilihan_menu == "2":
     melihat_daftar_tugas()
   elif pilihan_menu == "3":
+    menyelesaikan_tugas()
+  elif pilihan_menu == "4":
+    delete_by_tanggal()
+  elif pilihan_menu == "5":
     break
   else:
     print("Masukan pilihan yang tepat")
