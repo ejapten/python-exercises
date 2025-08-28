@@ -23,6 +23,9 @@ def tambah_tanggal_tugas():
   while True:
     try:
       tanggal_tugas = input("\n📅 Masukan Tanggal : ").strip()
+      if tanggal_tugas == 'end':
+        return None
+
       format_tanggal = "%Y-%m-%d"
       format_tanggal_tugas = datetime.strptime(tanggal_tugas, format_tanggal)
       return format_tanggal_tugas
@@ -32,7 +35,6 @@ def tambah_tanggal_tugas():
       continue
 
 def simpan_atau_tidak():
-  print("."*60)
 
   while True:
 
@@ -51,12 +53,17 @@ def simpan_atau_tidak():
       continue
     
 def tambah_daftar_tugas_todolist():
+  notifikasi("📌 ketik 'end' jika ingin keluar dari menu menambah tugas")
+
   while True:
+
     # Dictionary untuk menyimpa to-do-list
     daftar_tugas_yang_ditambahkan = daftar_tugas
 
     # Apply fungsi menambah tanggal  tugas
     tambah_daftar_tanggal_tugas = tambah_tanggal_tugas()
+    if tambah_daftar_tanggal_tugas is None:
+      break
 
     # Apply Fungsi menambah nama tugas
     tambah_daftar_nama_tugas = tambah_nama_tugas()
