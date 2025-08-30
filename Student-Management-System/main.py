@@ -50,7 +50,43 @@ def identitas_siswa_di_sekolah():
         return True
     else:
       print("Kelas tidak berhasil ditemukan")
-    
 
-identitas_siswa_di_sekolah()
+def input_nilai_mata_pelajaran(mata_pelajaran):
+  while True:
+    try:
+      input_nilai = int(input(f"Masukan Nilai {mata_pelajaran}"))
+      return input_nilai
+    except ValueError:
+      print("Nilai yang anda masukan Tidak Valid, masukan angka")
+
+def nilai_mata_pelajaran_ipa():
+  nilai_bahasa_indonesia = input_nilai_mata_pelajaran("Bahasa Indonesia = ")
+  nilai_bahasa_inggris = input_nilai_mata_pelajaran("Bahasa Inggris = ")
+  nilai_matematika = input_nilai_mata_pelajaran("Matematika = ")
+  nilai_sejarah = input_nilai_mata_pelajaran("Sejarah = ")
+  nilai_biologi = input_nilai_mata_pelajaran("Biologi = ")
+  nilai_kimia = input_nilai_mata_pelajaran("Kimia = ")
+  nilai_fisika =  input_nilai_mata_pelajaran("Fisika = ")
+
+def nilai_mata_pelajaran_ips():
+  nilai_bahasa_indonesia = input_nilai_mata_pelajaran("Bahasa Indonesia = ")
+  nilai_bahasa_inggris = input_nilai_mata_pelajaran("Bahasa Inggris = ")
+  nilai_matematika = input_nilai_mata_pelajaran("Matematika = ")
+  nilai_sejarah = input_nilai_mata_pelajaran("Sejarah = ")
+  nilai_ekonomi = input_nilai_mata_pelajaran("Ekonomi = ")
+  nilai_geografi = input_nilai_mata_pelajaran("Geografi = ")
+  nilai_sosiologi =  input_nilai_mata_pelajaran("Sosiologi = ")
+
+
+print("\nPilihan Jurusan")
+print("1. IPA")
+print("2. IPS")
+
+pilihan_jurusan = input("Masukan Jurusan = ")
+if pilihan_jurusan == "1":
+  nilai_mata_pelajaran_ipa()
+elif pilihan_jurusan == "2":
+  nilai_mata_pelajaran_ips()
+else:
+  print("Masukan tepat")
 
