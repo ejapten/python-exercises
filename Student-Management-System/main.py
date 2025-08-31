@@ -3,29 +3,68 @@
 # indo, inggris, mtk, ekonomi, geografi, sosiologi, sejarah = IPS
 
 import re
+from datetime import datetime
 
 data_siswa = {}
 
+def input_identitas_pribadi_siswa(jenis_identitas_pribadi):
+  while True:
+    try:
+      input_identitas_pribadi = (input(f"Masukan {jenis_identitas_pribadi} siswa"))
+      return input_identitas_pribadi
+    except ValueError:
+      print("")
+
 def identitas_pribadi_siswa():
   while True:
-    nama_siswa = input("Masukan Nama Siswa : ")
 
-    if re.fullmatch(r"[A-Za-z ]+", nama_siswa):
+    #NIK
+    nik_siswa = input("Masukan NIK Siswa : ").strip()
+    if not nik_siswa.isdigit():
+      print("NIK hanya boleh angka")
+      continue
+    elif len(nik_siswa) < 16 :
+      print("NIK Tidak Boleh Kurang dari 16 angka")
+      continue
+    elif len(nik_siswa) > 16:
+      print ("NIK Tidak Boleh lebih dari 16 angka")
+      continue
+    else: 
+      print("Nik Berhasil ditambahkan")
+
+    # Nama Lengkap
+    nama_lengkap_siswa = input("Masukan Nama Siswa : ")
+
+    if re.fullmatch(r"[A-Za-z ]+", nama_lengkap_siswa):
       break
     else:
       print("Nama Tidak Valid. Tidak boleh menggunakan angka dan simbol")
 
-  while True:
-    try:
-      umur_siswa = int(input("Masukan Umur Siswa : "))
-    except ValueError:
-      print("Masukan dalam bentuk angka")
-      break
-
-    if umur_siswa > 6:
-      break
+    # Alamat Rumah
+    alamat_rumah_siswa = input("Masukan alamat rumah : ")
+    if not re.fullmatch(r"[A-Za-z0-9 ]+", alamat_rumah_siswa):
+      print("Tidak boleh ada simbol dalam memasuan alamat")
+      continue
     else:
-        print("Masukan umur yang benar")
+      print("Alamat Valid")
+
+    # Tanggal Lahir
+    tanggal_lahir_siswa = input("Masukan Tanggal Lahir : ")
+    format_tanggal_lahir = "%Y-%m-%d"
+    format_tanggal_lahir_siswa = datetime.strptime(tanggal_lahir_siswa, format_tanggal_lahir)
+
+    # Umur
+    tanggal_hari_ini = datetime.now()
+    umur_siswa = tanggal_hari_ini.year - format_tanggal_lahir_siswa.year
+
+    if (tanggal_hari_ini.month, tanggal_hari_ini.day) < (format_tanggal_lahir_siswa.month, format_tanggal_lahir_siswa.day):
+      umur_siswa -=1
+  
+    break
+
+    
+
+
 
 def identitas_siswa_di_sekolah():
 
@@ -78,15 +117,16 @@ def nilai_mata_pelajaran_ips():
   nilai_sosiologi =  input_nilai_mata_pelajaran("Sosiologi = ")
 
 
-print("\nPilihan Jurusan")
-print("1. IPA")
-print("2. IPS")
+# print("\nPilihan Jurusan")
+# print("1. IPA")
+# print("2. IPS")
 
-pilihan_jurusan = input("Masukan Jurusan = ")
-if pilihan_jurusan == "1":
-  nilai_mata_pelajaran_ipa()
-elif pilihan_jurusan == "2":
-  nilai_mata_pelajaran_ips()
-else:
-  print("Masukan tepat")
+# pilihan_jurusan = input("Masukan Jurusan = ")
+# if pilihan_jurusan == "1":
+#   nilai_mata_pelajaran_ipa()
+# elif pilihan_jurusan == "2":
+#   nilai_mata_pelajaran_ips()
+# else:
+#   print("Masukan tepat")
 
+identitas_pribadi_siswa()
