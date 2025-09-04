@@ -1,57 +1,66 @@
-# Menambahkan nama, umur, kelas, nilai, ID
-# indo, inggris, mtk, biologi, kimia, fisika, sejarah = IPA
-# indo, inggris, mtk, ekonomi, geografi, sosiologi, sejarah = IPS
-
 import re
 from datetime import datetime
+import numbers
 
-data_siswa = {}
+data_pribadi_siswa = {}
+data_siswa_disekolah = {}
 
-def input_identitas_pribadi_siswa(jenis_identitas_pribadi):
-  while True:
-    try:
-      input_identitas_pribadi = (input(f"Masukan {jenis_identitas_pribadi} siswa"))
-      return input_identitas_pribadi
-    except ValueError:
-      print("")
+# Fungsi Pesan 
+def notifikasi(teks):
+  print(f"{teks}\n")
 
 def identitas_pribadi_siswa():
+
+  """"Fungsi Untuk memasukan identitas pribadi siswa
+  """
+
   while True:
 
     #NIK
     nik_siswa = input("Masukan NIK Siswa : ").strip()
-    if not nik_siswa.isdigit():
-      print("NIK hanya boleh angka")
-      continue
-    elif len(nik_siswa) < 16 :
-      print("NIK Tidak Boleh Kurang dari 16 angka")
+
+    if len(nik_siswa) < 16 :
+      notifikasi("--> ⚠️ NIK Tidak Boleh Kurang dari 16 angka")
       continue
     elif len(nik_siswa) > 16:
-      print ("NIK Tidak Boleh lebih dari 16 angka")
+      notifikasi("--> ⚠️ NIK Tidak Boleh lebih dari 16 angka")
+      continue
+    elif not re.fullmatch(r"\d+", nik_siswa):
+      notifikasi("--> ⚠️ NIK tidak boleh mengandung Karakter")
       continue
     else: 
-      print("Nik Berhasil ditambahkan")
+      notifikasi("--> ✅ NIK  Berhasil ditambah")
 
     # Nama Lengkap
-    nama_lengkap_siswa = input("Masukan Nama Siswa : ")
+    nama_lengkap_siswa = input("Masukan Nama Lengkap : ")
 
     if re.fullmatch(r"[A-Za-z ]+", nama_lengkap_siswa):
-      break
+      notifikasi("--> ✅ Nama Berhasil ditambahkan")
     else:
-      print("Nama Tidak Valid. Tidak boleh menggunakan angka dan simbol")
+      print("--> ⚠️ Nama Tidak Valid. Tidak boleh menggunakan angka dan simbol")
 
     # Alamat Rumah
     alamat_rumah_siswa = input("Masukan alamat rumah : ")
-    if not re.fullmatch(r"[A-Za-z0-9 ]+", alamat_rumah_siswa):
-      print("Tidak boleh ada simbol dalam memasuan alamat")
+    if alamat_rumah_siswa == ' ':
+      notifikasi("--> ⚠️ Alamat Tidak Boleh kosong")
       continue
     else:
-      print("Alamat Valid")
+      notifikasi("--> ✅ Alamat Valid")
 
     # Tanggal Lahir
-    tanggal_lahir_siswa = input("Masukan Tanggal Lahir : ")
-    format_tanggal_lahir = "%Y-%m-%d"
-    format_tanggal_lahir_siswa = datetime.strptime(tanggal_lahir_siswa, format_tanggal_lahir)
+    while True: 
+      try:
+          tanggal_lahir_siswa = input("Masukan Tanggal Lahir : ")
+          format_tanggal_lahir = "%Y-%m-%d"
+          format_tanggal_lahir_siswa = datetime.strptime(tanggal_lahir_siswa, format_tanggal_lahir)
+          format_tanggal_lahir_siswa2 = format_tanggal_lahir_siswa.strftime(format_tanggal_lahir)
+
+          if tanggal_lahir_siswa == format_tanggal_lahir_siswa2  :
+            notifikasi("--> ✅ Tanggal lahir telah ditambahkan")
+            break
+          
+      except ValueError:
+        notifikasi("Masukan Tanggal lahir dengan format benar")
 
     # Umur
     tanggal_hari_ini = datetime.now()
@@ -62,11 +71,21 @@ def identitas_pribadi_siswa():
   
     break
 
-    
+def data_pribadi_siswa_sekolah():
 
+  while True:
+    # Dictionary kumpulan data pribadi siswa
+    kumpulan_data_pribadi_siswa_sekolah = data_pribadi_siswa
+    # Apply fungsi untuk menambahkan data pribadi siswa
+    identitas_pribadi_siswa_sekolah = identitas_pribadi_siswa()
+    if identitas_pribadi_siswa_sekolah is None:
+      break
 
 
 def identitas_siswa_di_sekolah():
+
+  """Fungsi untuk memasukan identitas siswa di sekolah
+  """
 
   daftar_kelas = ["X IPA 1", "X IPA 2", "X IPA 3", "X IPS 1", "X IPS 2", "X IPS 3",
                  "XI IPA 1", "XI IPA 2", "XI IPA 3", "XI IPS 1", "XI IPS 2", "XI IPS 3",
@@ -91,6 +110,10 @@ def identitas_siswa_di_sekolah():
       print("Kelas tidak berhasil ditemukan")
 
 def input_nilai_mata_pelajaran(mata_pelajaran):
+
+  """Fungsi untuk menginput pada sebuah fungsi nilai mata pelajaran di sekolah
+  """
+
   while True:
     try:
       input_nilai = int(input(f"Masukan Nilai {mata_pelajaran}"))
@@ -99,6 +122,10 @@ def input_nilai_mata_pelajaran(mata_pelajaran):
       print("Nilai yang anda masukan Tidak Valid, masukan angka")
 
 def nilai_mata_pelajaran_ipa():
+
+  """Fungsi untuk memasukan nilai mata pelajaran siswa kelas IPA
+  """
+
   nilai_bahasa_indonesia = input_nilai_mata_pelajaran("Bahasa Indonesia = ")
   nilai_bahasa_inggris = input_nilai_mata_pelajaran("Bahasa Inggris = ")
   nilai_matematika = input_nilai_mata_pelajaran("Matematika = ")
@@ -108,6 +135,10 @@ def nilai_mata_pelajaran_ipa():
   nilai_fisika =  input_nilai_mata_pelajaran("Fisika = ")
 
 def nilai_mata_pelajaran_ips():
+
+  """Fungsi untuk memasukan nilai mata pelajaran siswa kelas IPA
+  """
+
   nilai_bahasa_indonesia = input_nilai_mata_pelajaran("Bahasa Indonesia = ")
   nilai_bahasa_inggris = input_nilai_mata_pelajaran("Bahasa Inggris = ")
   nilai_matematika = input_nilai_mata_pelajaran("Matematika = ")
@@ -115,6 +146,7 @@ def nilai_mata_pelajaran_ips():
   nilai_ekonomi = input_nilai_mata_pelajaran("Ekonomi = ")
   nilai_geografi = input_nilai_mata_pelajaran("Geografi = ")
   nilai_sosiologi =  input_nilai_mata_pelajaran("Sosiologi = ")
+
 
 
 # print("\nPilihan Jurusan")
@@ -129,4 +161,4 @@ def nilai_mata_pelajaran_ips():
 # else:
 #   print("Masukan tepat")
 
-identitas_pribadi_siswa()
+data_pribadi_siswa_sekolah()
